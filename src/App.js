@@ -147,7 +147,7 @@ function App() {
         console.error("Error connecting to Metamask:", err);
       }
     } else {
-      console.error("Metamask is not detected in the browser");
+      alert("Metamask is not detected in the browser");
     }
   }
 
