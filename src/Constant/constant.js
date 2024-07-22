@@ -1,4 +1,4 @@
-const contractAddress = "0xf06C4766b7aDa1B8baD40546cC3060005ee841Ca";
+const contractAddress = "0xEd04abbcD1633a113fB970A761245bE84832197f";
 
 const contractAbi = [
   {
@@ -10,7 +10,7 @@ const contractAbi = [
       },
       {
         "internalType": "uint256",
-        "name": "_durationInMinutes",
+        "name": "_durationInSeconds",
         "type": "uint256"
       }
     ],
@@ -134,6 +134,16 @@ const contractAbi = [
     "inputs": [],
     "name": "getRemainingTime",
     "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
       {
         "internalType": "uint256",
         "name": "",
