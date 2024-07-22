@@ -11,7 +11,7 @@ function App() {
   const [account, setAccount] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
   const [votingStatus, setVotingStatus] = useState(true);
-  const [remainingTime, setRemainingTime] = useState('');
+  const [remainingTime, setRemainingTime] = useState(''); // Changed from string to a format to handle hours, minutes, seconds
   const [candidates, setCandidates] = useState([]);
   const [number, setNumber] = useState('');
   const [canVoteStatus, setCanVoteStatus] = useState(false);
@@ -32,7 +32,7 @@ function App() {
     if (account) {
       console.log("Account changed: ", account);
       getCandidates();
-      getRemainingTime();
+      getRemainingTime(); // Fetch updated remaining time
       getCurrentStatus();
       checkCanVote();
     }
@@ -113,9 +113,9 @@ function App() {
       await provider.send("eth_requestAccounts", []);
       const signer = provider.getSigner();
       const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
-      const time = await contractInstance.getRemainingTime();
-      setRemainingTime(time.toString()); // Directly convert the time to string
-      console.log("Remaining time: ", time.toString());
+      const [hours, minutes, seconds] = await contractInstance.getRemainingTime(); // Changed to handle three values
+      setRemainingTime(`${hours}h ${minutes}m ${seconds}s`); // Format the remaining time
+      console.log("Remaining time: ", `${hours}h ${minutes}m ${seconds}s`);
     } catch (err) {
       console.error("Error getting remaining time:", err);
     }
@@ -162,7 +162,7 @@ function App() {
           <Connected
             account={account}
             candidates={candidates}
-            remainingTime={remainingTime}
+            remainingTime={remainingTime} // Updated to show formatted time
             number={number}
             handleNumberChange={handleNumberChange}
             voteFunction={vote}
@@ -179,4 +179,3 @@ function App() {
 }
 
 export default App;
-
