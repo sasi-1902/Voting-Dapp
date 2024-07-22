@@ -16,9 +16,9 @@ contract Voting {
     bool public votingFinished;
 
     event WinnerDeclared(uint256 indexed winnerIndex, string winnerName, uint256 voteCount);
-    event Voted(address indexed voter, uint256 candidateIndex); // Define Voted event
+    event Voted(address indexed voter, uint256 candidateIndex);
 
-    constructor(string[] memory _candidateNames, uint256 _durationInMinutes) {
+    constructor(string[] memory _candidateNames, uint256 _durationInSeconds) {
         for (uint256 i = 0; i < _candidateNames.length; i++) {
             candidates.push(Candidate({
                 name: _candidateNames[i],
@@ -27,7 +27,7 @@ contract Voting {
         }
         owner = msg.sender;
         votingStart = block.timestamp;
-        votingEnd = block.timestamp + (_durationInMinutes * 1 minutes);
+        votingEnd = block.timestamp + _durationInSeconds;
         votingFinished = false;
     }
 
@@ -50,7 +50,7 @@ contract Voting {
 
         candidates[_candidateIndex].voteCount++;
         voters[msg.sender] = true;
-        emit Voted(msg.sender, _candidateIndex); // Emit Voted event
+        emit Voted(msg.sender, _candidateIndex);
     }
 
     function declareWinner() public onlyOwner {
@@ -78,11 +78,15 @@ contract Voting {
         return (block.timestamp >= votingStart && block.timestamp < votingEnd && !votingFinished);
     }
 
-    function getRemainingTime() public view returns (uint256) {
+    function getRemainingTime() public view returns (uint256, uint256, uint256) {
         require(block.timestamp >= votingStart, "Voting has not started yet.");
         if (block.timestamp >= votingEnd) {
-            return 0;
+            return (0, 0, 0);
         }
-        return votingEnd - block.timestamp;
+        uint256 remainingTime = votingEnd - block.timestamp;
+        uint256 Hours = remainingTime / 3600;
+        uint256 Minutes = (remainingTime % 3600) / 60;
+        uint256 Seconds = remainingTime % 60;
+        return (Hours, Minutes, Seconds);
     }
 }
